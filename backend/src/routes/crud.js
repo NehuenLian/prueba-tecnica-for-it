@@ -8,7 +8,8 @@ async function getTaskById(request, response) {
     const id = parseInt(request.params.id);
 
     try {
-        const task = await db.get('SELECT * FROM tasks WHERE id = ?', [id]);
+        const selectQuery = "SELECT * FROM tasks WHERE id = ?"
+        const task = await db.get(selectQuery, [id]);
         console.log("Task obtained.");
 
         return response.status(200).json(task);
@@ -21,10 +22,11 @@ async function getTaskById(request, response) {
 async function getAllTasks(request, response) {
 
     try  {
-        const tasks = await db.all("SELECT * FROM tasks");
+        const selectQuery = "SELECT * FROM  tasks"
+        const tasks = await db.all(selectQuery);
 
         console.log("Tasks obtained.");
-        return response.status.json(200).json(tasks);
+        return response.status(200).json(tasks);
     }
     catch (error) {
         return response.status(500).json({ error: "Ocurrió un error al obtener las tareas" })
@@ -42,8 +44,8 @@ async function createTask(request, response) {
     }
 
     try {
-        const query = "INSERT INTO tasks (title, description, completed) VALUES (?, ?, ?)";
-        const result = await db.run(query, [title, description, completed]);
+        const insertQuery = "INSERT INTO tasks (title, description, completed) VALUES (?, ?, ?)";
+        const result = await db.run(insertQuery, [title, description, completed]);
 
         console.log("Task created.");
         return response.status(201).json({
@@ -70,8 +72,8 @@ async function updateTask(request, response) {
             return response.status(404).json({ error: "Tarea no encontrada." });
         }
 
-        const query = "UPDATE tasks SET title = ?, description = ?, completed = ? WHERE id = ?";
-        await db.run(query, [
+        const updateQuery = "UPDATE tasks SET title = ?, description = ?, completed = ? WHERE id = ?";
+        await db.run(updateQuery, [
             title ?? task.title,
             description ?? task.description,
             completed ?? task.completed,
@@ -90,13 +92,13 @@ async function deleteTask(request, response) {
 
     try {
         const selectQuery = "SELECT * FROM tasks WHERE id = ?";
-        const task = await db.get(query, [id]);
+        const task = await db.get(selectQuery, [id]);
         if (!task) {
             return response.status(404).json({ message: "Tarea no encontrada."} );
         }
 
         const deleteQuery = "DELETE FROM tasks WHERE id = ?";
-        await db.run(query, [id]);
+        await db.run(deleteQuery, [id]);
         console.log("Task deleted.");
 
         return response.status(200).json({ message: "Tarea eliminada." });
@@ -106,8 +108,8 @@ async function deleteTask(request, response) {
     }
 }
 
-router.get('/', getTaskById);
-router.get('/:id', getAllTasks);
+router.get('/:id', getTaskById);
+router.get('/', getAllTasks);
 router.post('/', createTask);
 router.put('/:id', updateTask);
 router.delete('/:id', deleteTask);
