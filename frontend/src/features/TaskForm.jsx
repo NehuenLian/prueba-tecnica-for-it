@@ -20,7 +20,6 @@ function TaskForm() {
         completed: false,
     });
 
-
     useEffect(() => { // cargar tareas solo si existe una id en el param
         if (isEditing) {
             loadTaskData();
@@ -95,40 +94,68 @@ function TaskForm() {
 
     // early returns antes de renderizar el componente
     if (isLoading) {
-        return <p>Cargando datos...</p>
+        return (
+            <div className="container mt-5 text-center">
+                <p className="text-muted">Cargando datos...</p>
+            </div>
+        );
     }
     if (error) {
-        return <p>Ocurrió un error con el servidor al intentar actualizar o editar la tarea.</p>
+        return (
+            <div className="container mt-5 text-center">
+                <div className="alert alert-danger d-inline-block">
+                    Ocurrió un error con el servidor al intentar actualizar o editar la tarea.
+                </div>
+            </div>
+        );
     }
 
     return (
-        <div>
-            <h1></h1>
-            <form onSubmit={handleSubmit}>
-                <input 
-                    type="text"
-                    placeholder='Título'
-                    value={formData.title}
-                    onChange={(e) => setFormData({...formData, title: e.target.value})}
-                />
+        <div className="container mt-5">
+            <div className="row justify-content-center">
+                <div className="col-12 col-md-6 col-lg-5">
+                    <div className="card shadow p-4">
+                        <h1 className='text-center mb-4'>Crear/editar tarea</h1>
+                        <form onSubmit={handleSubmit} className='form-control'>
+                            <div className='mb-3'>
+                                <label htmlFor='title' className='for-label'>Título de la tarea</label>
+                                <input 
+                                    type="text"
+                                    className='form-control'
+                                    placeholder='Título'
+                                    value={formData.title}
+                                    onChange={(e) => setFormData({...formData, title: e.target.value})}
+                                />
+                            </div>
 
-                <input 
-                    type='text'
-                    placeholder='Descripción'
-                    value={formData.description}
-                    onChange={(e) => setFormData({...formData, description: e.target.value})}
-                />
+                            <div className='mb-3'>
+                                <label htmlFor="description" className="form-label">Descripción</label>
+                                <textarea 
+                                    type='text'
+                                    className='form-control'
+                                    placeholder='Descripción'
+                                    value={formData.description}
+                                    onChange={(e) => setFormData({...formData, description: e.target.value})}
+                                />
+                            </div>
 
-                <label>
-                    <input 
-                    type='checkbox'
-                    checked={formData.completed}
-                    onChange={(e) => setFormData({...formData, completed: e.target.checked})}
-                    />
-                </label>
-
-                <button type="submit">Guardar</button>
-            </form>
+                            <div className='mb-3'>
+                                <label>
+                                    <input 
+                                    type='checkbox'
+                                    checked={formData.completed}
+                                    onChange={(e) => setFormData({...formData, completed: e.target.checked})}
+                                    />
+                                </label>
+                            </div>
+                            <div className='d-flex gap-2 mt-3'>
+                                <button type="submit" className="btn btn-primary">Guardar</button>
+                                <button type="button" className="btn btn-primary" onClick={ () => navigate('/') }>Volver</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
