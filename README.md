@@ -42,7 +42,7 @@ VITE_API_URL=http://localhost:3000/api/tasks
 npm run dev
 ```
 
-# Screenshoots
+# Screenshots
 A continuación se muestran imágenes del funcionamiento de los principales módulos:
 
 ### Listado de tareas
