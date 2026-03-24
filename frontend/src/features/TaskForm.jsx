@@ -33,7 +33,7 @@ function TaskForm() {
         el useEffect se ejecuta en caso de que isEditing sea true, sino, no se carga nada.
         */
         try {
-            const response = await fetch(`http://localhost:3000/api/tasks/${id}`);
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/${id}`);
             if (!response.ok) {
                 throw new Error("Tarea no encontrada.");
             }
@@ -77,7 +77,7 @@ function TaskForm() {
     async function handleSubmit(event) {
         event.preventDefault();
         // ternarios para verificar si se esta creando o editando
-        const url = isEditing ? `http://localhost:3000/api/tasks/${id}` : "http://localhost3000/api/tasks";
+        const url = isEditing ? `${import.meta.env.VITE_API_URL}/${id}` : `${import.meta.env.VITE_API_URL}`;
         const method = isEditing ? "PUT" : "POST";
 
         // construir objeto y enviar al backend

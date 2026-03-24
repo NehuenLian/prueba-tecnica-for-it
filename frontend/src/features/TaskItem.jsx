@@ -17,7 +17,7 @@ function TaskItem()  {
     async function loadTask() {
 
         try {
-            const response = await fetch(`http://localhost:3000/api/tasks/${id}`);
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/${id}`);
             if (!response.ok) {
                 throw new Error("Tarea no encontrada.");
             }

@@ -10,7 +10,7 @@ function TaskList() {
     async function fetchTasks() {
 
         try {
-            const response = await fetch("http://localhost:3000/api/tasks");
+            const response = await fetch(`${import.meta.env.VITE_API_URL}`);
             if (!response.ok) {
                 throw new Error("Error al obtener las tareas.");
             }
@@ -33,7 +33,7 @@ function TaskList() {
     async function deleteTask(id) {
         
         try {
-            const response = await fetch(`http://localhost:3000/api/tasks${id}`, { method: "DELETE" });
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/${id}`, { method: "DELETE" });
             if (!response.ok) {
                 throw new Error("Ocurrió un problema al eliminar la tarea en el servidor.");
             }
