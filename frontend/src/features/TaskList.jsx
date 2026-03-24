@@ -52,37 +52,61 @@ function TaskList() {
 
     function renderTasks() {
         return tasks.map((task) => (
-            <li key={task.id}>
-                <strong>{task.title}</strong>
-                <div>
-                    <Link to={`/task/${task.id}`}>Detalles</Link>
-                    <Link to={`/task/edit/${task.id}`}>Editar</Link>
+            <div className='container mt-4'>
+                <div className='row justify-content-center'>
+                    <div className='col-12 col-md-6'>
+                        <li key={task.id} className='card shadow-sm mb-4 p-3'>
+                            <strong>{task.title}</strong>
 
-                    <button onClick={() => deleteTask(task.id)}>
-                        Eliminar
-                    </button>
+                            <div className='d-flex gap-2 mt-3'>
+                                <Link to={`/task/${task.id}`} className='btn btn-primary'>Detalles</Link>
+                                <Link to={`/task/edit/${task.id}`} className='btn btn-primary'>Editar</Link>
+                                    <button onClick={() => deleteTask(task.id)} className='btn btn-danger'>
+                                        Eliminar
+                                    </button>
+                            </div>
+
+                        </li>
+                    </div>
                 </div>
-            </li>
+            </div>
         ));
     }
 
     if (isLoading) {
-        return <p>Cargando tareas...</p>;
+        return (
+            <div className="container mt-5 text-center">
+                <div className="spinner-border text-primary mb-2" role="status"></div>
+                <p className="text-muted">Cargando tareas...</p>
+            </div>
+        );
     }
     if (error) {
-        return <p>Ocurrió un error al obtener las tareas del servidor.</p>;
+        return (
+            <div className="container mt-5 text-center">
+                <div className="alert alert-danger d-inline-block">
+                    Ocurrió un error al obtener las tareas del servidor.
+                </div>
+            </div>
+        );
     }
 
     return (
-        <div>
-            <h1>Lista de tareas</h1>
-                {tasks.length === 0 ? (
-                        <p>No hay tareas pendientes.</p>
-                    ):
-                    (
-                        <ul>{renderTasks()}</ul>
-                    )
-                }
+        <div className='container mt-5'>
+            <div className='row justify-content-center'>
+                <div className="col-12 col-md-8 col-lg-6 text-center">
+                    <h1>Lista de tareas</h1>
+                        {tasks.length === 0 ? (
+                                <p className="text-center text-muted mt-5">
+                                    No hay tareas pendientes.
+                                </p>
+                            ):
+                            (
+                                <ul className='list-unlysted'>{renderTasks()}</ul>
+                            )
+                        }
+                </div>
+            </div>
         </div>
     );
 }

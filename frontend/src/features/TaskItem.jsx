@@ -45,43 +45,73 @@ function TaskItem()  {
 
     // early returns antes de devolver el componente
     if (isLoading) {
-        return <p>Cargando...</p>
+        return (
+            <div className="container mt-5 text-center">
+                <p className="text-muted">Cargando...</p>
+            </div>
+        );
     }
     if (error) {
-        return <p>Ocurrió un error con el servidor al intentar obtener la tarea.</p>
+        return (
+            <div className="container mt-5 text-center">
+                <div className="alert alert-danger d-inline-block">
+                    Ocurrió un error al intentar obtener la tarea.
+                </div>
+            </div>
+        );
     }
     if (!id) {
-        return <p>Error: no se proporcionó una ID de tarea.</p>
+        return (
+            <div className="container mt-5 text-center">
+                <div className="alert alert-danger d-inline-block">
+                    Error: no se proporcionó una ID de tarea.
+                </div>
+            </div>
+        );
     }
 
     return (
-        <div>
-            <h1>Detalle de la tarea</h1>
-            <form>
-                <input 
-                    type="text"
-                    value={formData.title}
-                    readOnly
-                />
+        <div className="container mt-5">
+            <div className="row justify-content-center">
+                <div className="col-12 col-md-6 col-lg-5">
+                    <div className="card shadow p-4">
+                        <h1 className='text-center mb-4'>Detalle de la tarea</h1>
+                        <form className='form-control'>
+                            <div className='mb-3'>
+                                <label htmlFor='title' className='for-label'>Título de la tarea</label>
+                                <input 
+                                    type="text"
+                                    className='form-control'
+                                    value={formData.title}
+                                    readOnly
+                                />
+                            </div>
 
-                <input 
-                    type='text'
-                    value={formData.description}
-                    readOnly
-                />
-
-                <label>
-                    <input 
-                        type='checkbox'
-                        checked={formData.completed}
-                        disabled
-                    />
-                </label>
-            </form>
-
-            <button type="button" onClick={ () => navigate('/') }>Volver</button>
-        
+                            <div className='mb-3'>
+                                <label htmlFor="description" className="form-label">Descripción</label>
+                                <textarea 
+                                    type='text'
+                                    className='form-control'
+                                    value={formData.description}
+                                    readOnly
+                                />
+                            </div>
+                        
+                            <label>
+                                <input
+                                    type='checkbox'
+                                    checked={formData.completed}
+                                    disabled
+                                />
+                            </label>
+                        </form>
+                        <div className='d-flex gap-2 mt-3'>
+                            <button type="button" className="btn btn-primary" onClick={ () => navigate('/') }>Volver</button>
+                        </div>
+                </div>
+            </div>
         </div>
+    </div>
     );
 }
 
