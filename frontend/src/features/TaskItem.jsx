@@ -14,30 +14,30 @@ function TaskItem()  {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    async function loadTask() {
-
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/${id}`);
-            if (!response.ok) {
-                throw new Error("Tarea no encontrada.");
-            }
-
-            const data = await response.json();
-            setFormData({ // actualizamos los datos del componente (en este punto diría "cargando")
-                title: data.title || '',
-                description: data.description || '',
-                completed: data.completed === 1 // convertir el 1 de sqlite a true
-            });
-        }
-        catch (err) {
-            setError(err.message);
-        }
-        finally {
-            setIsLoading(false); // sea exito o error, quitamos el loading para mostrar lo que paso
-        }
-    }
-
     useEffect(() => {
+
+        async function loadTask() {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/${id}`);
+                if (!response.ok) {
+                    throw new Error("Tarea no encontrada.");
+                }
+
+                const data = await response.json();
+                setFormData({ // actualizamos los datos del componente (en este punto diría "cargando")
+                    title: data.title || '',
+                    description: data.description || '',
+                    completed: data.completed === 1 // convertir el 1 de sqlite a true
+                });
+            }
+            catch (err) {
+                setError(err.message);
+            }
+            finally {
+                setIsLoading(false); // sea exito o error, quitamos el loading para mostrar lo que paso
+            }
+        }
+
         if (id) {
             loadTask();
         }

@@ -21,32 +21,33 @@ function TaskForm() {
     });
 
     useEffect(() => { // cargar tareas solo si existe una id en el param
+
+        async function loadTaskData() {
+            /*
+            funcion para obtener la tarea
+            el useEffect se ejecuta en caso de que isEditing sea true, sino, no se carga nada.
+            */
+            try {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/${id}`);
+                if (!response.ok) {
+                    throw new Error("Tarea no encontrada.");
+                }
+
+                const taskData = await response.json();
+                setFormData(taskData); // actualizamos los datos del componente (en este punto diria "cargando")
+            }
+            catch (err) {
+                setError(err.message);
+            }
+            finally {
+                setIsLoading(false); // sea exito o error, quitamos el loading para manejar la sitaucion
+            }
+        }
+
         if (isEditing) {
             loadTaskData();
         }
-    }, [id]);
-
-    async function loadTaskData() {
-        /*
-        funcion para obtener la tarea
-        el useEffect se ejecuta en caso de que isEditing sea true, sino, no se carga nada.
-        */
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/${id}`);
-            if (!response.ok) {
-                throw new Error("Tarea no encontrada.");
-            }
-
-            const taskData = await response.json();
-            setFormData(taskData); // actualizamos los datos del componente (en este punto diria "cargando")
-        }
-        catch (err) {
-            setError(err.message);
-        }
-        finally {
-            setIsLoading(false); // sea exito o error, quitamos el loading para manejar la sitaucion
-        }
-    }
+    }, [id, isEditing]);
 
     async function saveTask(currentTask, url, method) {
         // actualiza tarea o guarda una nueva segun URL
