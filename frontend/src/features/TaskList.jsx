@@ -10,7 +10,7 @@ function TaskList() {
     async function fetchTasks() {
 
         try {
-            const response = await fetch("http://loalhost:3000/api/tasks");
+            const response = await fetch("http://localhost:3000/api/tasks");
             if (!response.ok) {
                 throw new Error("Error al obtener las tareas.");
             }
